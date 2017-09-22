@@ -17,5 +17,5 @@ ONBUILD RUN pip install --upgrade pip
 ONBUILD RUN /app/.heroku/python/bin/pip install -r requirements.txt
 ONBUILD ADD . /app/user/
 
-ONBUILD WORKDIR /usr/src/app
-ONBUILD CMD gunicorn --bind 0.0.0.0:$PORT ecommerce2.wsgi
+WORKDIR /usr/src/app
+CMD gunicorn --bind 0.0.0.0:$PORT wsgi

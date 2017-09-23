@@ -16,3 +16,5 @@ ONBUILD ADD requirements.txt /app/user/
 ONBUILD RUN pip install --upgrade pip
 ONBUILD RUN /app/.heroku/python/bin/pip install -r requirements.txt
 ONBUILD ADD . /app/user/
+
+WORKDIR /app/user

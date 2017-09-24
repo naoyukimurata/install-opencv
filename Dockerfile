@@ -18,3 +18,4 @@ ONBUILD RUN /app/.heroku/python/bin/pip install -r requirements.txt
 ONBUILD ADD . /app/user/
 
 WORKDIR /app/user
+CMD gunicorn --bind 0.0.0.0:$PORT myDjango.wsgi

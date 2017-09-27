@@ -6,6 +6,7 @@ RUN apt-get install -y --no-install-recommends sqlite3
 RUN apt-get install -y git
 RUN apt-get install -y python3-dev
 RUN apt-get install -y python3-pip
+RUN pip3 install numpy
 RUN apt-get install -y libpq-dev
 RUN apt-get install -y build-essential libssl-dev libffi-dev
 RUN rm -rf /var/lib/apt/lists/*
@@ -21,7 +22,6 @@ RUN ./opencv_install.sh
 
 RUN pip install --upgrade pip
 RUN pip3 install -r /usr/src/app/requirements.txt
-WORKDIR /usr/src/app
 
 # srcのフォルダを全てapp以下にコピー
 ONBUILD ADD . /usr/src/app/

@@ -19,9 +19,9 @@ WORKDIR /usr/src/app
 RUN echo 'deb http://archive.ubuntu.com/ubuntu trusty multiverse' >> /etc/apt/sources.list && apt-get update
 RUN ./opencv_install.sh
 
-ONBUILD RUN pip install --upgrade pip
-ONBUILD RUN pip3 install -r /usr/src/app/requirements.txt
-ONBUILD WORKDIR /usr/src/app
+RUN pip install --upgrade pip
+RUN pip3 install -r /usr/src/app/requirements.txt
+WORKDIR /usr/src/app
 
 # srcのフォルダを全てapp以下にコピー
 ONBUILD ADD . /usr/src/app/

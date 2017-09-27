@@ -1,18 +1,27 @@
-# Inherit from Heroku's python stack
-FROM heroku/python
+FROM python:3.4
 
-# Install OpenCV
-RUN mkdir -p /app/.heroku/opencv /tmp/opencv
-ADD Install-OpenCV /tmp/opencv
-WORKDIR /tmp/opencv/Ubuntu
+# Install python and pip
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends sqlite3
+RUN apt-get install -y git
+RUN apt-get install -y python3-dev
+RUN apt-get install -y python3-pip
+RUN apt-get install -y libpq-dev
+RUN apt-get install -y build-essential libssl-dev libffi-dev
+RUN rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /usr/src/app
+ADD requirements.txt /usr/src/app
+
+# OpenCVインストール
+ADD ./opencv_install.sh /usr/src/app
+WORKDIR /usr/src/app
 RUN echo 'deb http://archive.ubuntu.com/ubuntu trusty multiverse' >> /etc/apt/sources.list && apt-get update
-RUN ./opencv_latest.sh
+RUN ./opencv_install.sh
 
-# Python environment
-RUN echo 'export PYTHONPATH=${PYTHONPATH:-/app/.heroku/opencv/lib/python2.7/site-packages}' > /app/.profile.d/opencv.sh
-
-ONBUILD WORKDIR /app/user
-ONBUILD ADD requirements.txt /app/user/
 ONBUILD RUN pip install --upgrade pip
-ONBUILD RUN /app/.heroku/python/bin/pip install -r requirements.txt
-ONBUILD ADD . /app/user/
+ONBUILD RUN pip3 install -r /usr/src/app/requirements.txt
+ONBUILD WORKDIR /usr/src/app
+
+# srcのフォルダを全てapp以下にコピー
+ONBUILD ADD . /usr/src/app/
